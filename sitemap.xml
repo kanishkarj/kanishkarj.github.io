@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<url> <loc>https://kanishkarj.github.io/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/blog</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/tags</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/rust-internals-mir</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/web-development-roadmap-2018</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/functors-and-mondads-javascript</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/javascript-oops</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/prototypal-inheritence</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/javascript-exec-context</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/closures-in-javascript</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/functional-programming</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/webpack-p2</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/webpack-p3</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/webpack-p4</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/webpack-p1</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/about</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/tags/compilers-and-runtimes</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/tags/functional-programming</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/tags/javascript</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/tags/rust</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/tags/web-development</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://kanishkarj.github.io/tags/webpack</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+</urlset>
