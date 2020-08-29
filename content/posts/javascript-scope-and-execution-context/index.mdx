@@ -1,0 +1,96 @@
+---
+title: Javascript Scope and Execution Context
+tags: 
+  - Javascript
+date: 2018-07-01
+slug: "/javascript-exec-context"
+---
+
+Variable Scopes and the this keyword is a pretty confusing concept in Javascript. It is something a lot of Javascript developers feel uneasy about. In this post, we’ll try to understand what Variable scopes are look into what is an execution context.
+
+### Scope
+
+The first thing that we need to understand is that even though javascript is an interpreted language, the code undergoes a process called Lexing before the execution. So what is Lexing? It is a process which examines the source code and assigns semantic meaning to all tokens in the code.
+
+First, let’s define scope. Scope can be defined as the area of code in which the variable is accessible, Its simple as that. Now coming to Lexical Scope, it is scope that is defined at the lexing time. i.e when the compiler is parsing the source code and assigns meaning to variables used in the code, it simultaneously defines the scope for them.
+
+Now we need to understand how scopes work in javascript. In javascript, scopes work a bit differently unlike other languages like C++, Java etc. There are just two types of scopes :
+
+**Global Scope:** These variables are accessible across the whole file.
+
+**Function Scope:** There variables are accessible only inside the function they are defined in.
+
+Something interesting to note is that there’s no block scope in javascript. Another interesting thing is, in case of nested functions variables inside a function can access variables defined in the outer function. This property is called Closure, to know more [click here](https://medium.com/@kanishkarj/higher-order-functions-and-closures-6a9dccb2e052).
+
+### Execution Context
+
+Scope and Execution Context when defined sound very similar, and that is a misconception that every new developer has. Execution context can be defined as the environment in which the code is executed.
+
+Every time a javascript file is processed, a default Execution Context (EC) is created the **Global Execution Context**. All the code has access to this EC. Every time a function is called inside the global execution context or inside any function, a new execution context called **Functional Execution Context**. The JS engine handles these EC’s with the help of a stack called **Execution Context Stack**. The global EC is present by default in the stack, and every time a function is called a new EC is created with the variables defined in it and it is pushed into the stack. Once all the code in the function is executed it pops it and runs the code in the EC below it. Then comes the **eval()** function, it allows us to execute any expression passed to it. It is not considered safe to use eval(), check out this article by Mozilla to know more.
+
+The Execution context is created in 2 stages:
+1. **Creation Stage:** when the function is called, but it has not been executed yet :
+
+* Create the Scope Chain.
+
+* Instantiate the variables, functions, and arguments.
+
+* Determine the value of the this keyword.
+
+2. **Activation / Code Execution Stage:**
+
+* Assign values, references to functions and interpret / execute code.
+
+```javascript
+const ExecutionContext = {
+ variableObject: {}, // All the variable, arguments and inner function details of the current context
+ scopechain: [], // List of all the scopes inside which the current function is
+ this // Value of this 
+}
+```
+
+Let’s look at an example to understand how Execution Context stack works :
+
+```javascript
+var a = 8;
+
+function inner() {
+    console.log("I'm Inner.");
+}
+
+function outer() {
+    inner();
+    console.log("I'm Outer.");
+}
+
+outer();
+
+```
+
+Now let’s see step by step how the execution context stack is operated :
+
+* First, the Global context is pushed into the stack.
+
+* Line no. 12 calls function outer, then the engine creates and pushes a new execution stack for the outer function.
+
+* Now inside the outer function, we are called inner function, which is not defined in the outer function. Now we pull off the definition of inner function from the global scope. And hence a new scope for the inner function is created.
+
+* The Stack currently contains inner over outer over global.
+
+* Now when we reach the end of function inner, the EC is popped out of the stack. Then when we reach the end of function outer, its EC is popped out of the stack.
+
+### Scope Chain
+
+Scope chain is a list of all variable objects of functions inside which the current function exists. It can be said as the array of variable objects of functions of the elements in the EC stack after the EC for the current function is created. A variable object of a function is an object that contains all the variables accessible to the function.
+
+For example, in the code snippet given above the Scope chain of function inner is :
+
+    [ 
+     inner variable object,
+     outer variable object,
+     Global variable object
+    ]
+
+Scope chains lay the foundation for **Closures**. Closure is the property which states that a function has access to all variables which are defined by its scope chain.
+
+The main difference between Scope and Execution context is, variable scope is something developers perceive to understand the region of code the variables are accessible in. While Execution context is something the javascript engine uses while parsing your code.

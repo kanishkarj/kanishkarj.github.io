@@ -1,0 +1,161 @@
+---
+title: Configuring Webpack 4 (Part 4) Production and Code splitting
+tags: 
+  - Webpack
+  - "Web Development"
+date: 2018-05-14
+slug: "/webpack-p4"
+---
+
+In this post we’ll make some changes to our configuration so that the finally built files are ready for production. If you notice, /dist/assets/js/app.bundle.js is a huge file. Now as we start using more libraries the file gets bigger and bigger. That impacts the performance of the application as the browser will have to load bigger files. One way to reduce the file size is to minimize the js files.
+
+## Minimizing JS files
+
+To minimze files we use uglifyjs-webpack-plugin. To configure it, we first import *webpack.common.js* in *webpack.prod.js* :
+
+**webpack.prod.js**
+
+```javascript
+const merge = require('webpack-merge');
+const common = require('./webpack.common.js');
+const webpack = require('webpack');
+module.exports = merge(common, {
+  
+});
+```
+
+Now run the follwing on command line to install *uglifyjs-webpack-plugin* :
+
+    npm i -D uglifyjs-webpack-plugin
+
+Lets import it inside our file :
+
+    // ...
+    const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
+The config for minimzing the files :
+
+``` javascript   
+      module.exports = merge(common, {
+      devtool: 'source-map',
+      plugins: [
+        new UglifyJSPlugin({
+          sourceMap: true
+        })
+      ]
+    });
+```
+devtool: 'source-map' : A full SourceMap is emitted as a separate file. It adds a reference comment to the bundle so development tools know where to find it.
+
+Run npm run build:prod in the command line. Now if you open */dist/assets/js/app.bundle.js* you’ll notice the code has been minified, i.e the whole code is in one line.
+
+We’ll also specify that Node js is running under production mode, so that webpack can manage the libraries accordingly, i.e webpack can remove the testing libraries while bundling. So lets add another plugin to the plugins array :
+
+```javascript
+new webpack.DefinePlugin({
+  'process.env.NODE_ENV': JSON.stringify('production')
+})
+```
+
+So at the end of this we have :
+
+**webpack.prod.js**
+
+```javascript
+const merge = require('webpack-merge');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const common = require('./webpack.common.js');
+const webpack = require('webpack');
+module.exports = merge(common, {
+    devtool: 'source-map',
+    plugins: [
+        new UglifyJSPlugin({
+            sourceMap: true
+        }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('production')
+        })
+    ]
+});
+```
+
+## Code Splitting in Webpack
+
+Code splitting in webpack is implemented using chunks. This can be used to improve performance of the application. For better understanding lets create another set of Js, Sass and HTML files.
+
+**/src/assets/scss/page.scss**
+
+```scss
+$bgcolor: gray;
+body {
+    background: $bgcolor;
+}
+```
+
+**/src/assets/js/page.js**
+
+```javascript
+import '../scss/page.scss';
+let temp = "page.js";
+const func = (val) => console.log(val);
+func(temp);
+```
+
+**/src/page.html**
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>Page Chunk</h1>
+</body>
+</html>
+```
+
+We’ll have to make some modifications in* webpack.common.js *to load these new files that we created :
+
+## Add another entry point
+
+```javascript
+const config = {
+  entry: {
+    app: './assets/js/app.js',
+    page: './assets/js/page.js'
+  },
+  // ...
+}
+```
+
+Here app and page are chunk names. Chunks are basically names used to identify bundles. Lets test it, run npm run build. You should see 2 different files created *app.bundle.js* and *page.bundle.js* . But if you remember we didn’t specify any output path for the other file. That wasn’t a problem as the specifed output path was [name].bundle.js, hence a file is created for each chunk and named as specified.
+
+## Specify the Chunks in HTML Plugin
+
+```javascript
+const config = {
+    // ...
+    plugins: [
+        // ...
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: 'index.html',
+            chunks: ['app']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'page.html',
+            template: 'page.html',
+            chunks: ['page']
+        }),
+    ]
+}```
+
+We have created a new instance of HTMLWebpackPlugin with the configuration for *page.html*. Now below it we have added a new line called chunks, which is an array that defines all the chunks the particular html file will be using. On building the project you’ll notice that 2 files are created *index.html* and *page.html*. On opening you’ll find that the specified js file is referenced in it.
+
+The final complete repository can be viewed [here](https://github.com/kanishkarj/webpack-html-boilerplate).
+
+Thats it I guess, we have covered the basics of how to use webpack. This should help you build your own config as per your requirements. If you run into any issue feel free to contact me :)
